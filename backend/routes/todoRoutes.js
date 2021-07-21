@@ -18,4 +18,11 @@ router.post('/todos', (req,res)=> {
 
 })
 
+router.delete('/todos', (req,res)=> {
+  const {description: description} = req.body
+  Todo.findOneAndDelete({description}, (err,deletedTodo)=> {
+    return res.status(200).json(deletedTodo)
+  })  
+})
+
 module.exports=router

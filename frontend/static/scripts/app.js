@@ -3,14 +3,47 @@ const todoButton = document.querySelector('.todo-button');
 const todoList=document.querySelector('.todo-list');
 const filterSelection = document.querySelector(".filter-todo");
 
-window.onload = () => {
-  fetch('gettodos')
-  .then(data=>{
-    return data.json()
+
+const todosFromDB=[]
+const getData = async () => {
+  const response = await fetch('gettodos');
+  const data = await response.json();
+  data.forEach(element => {
+    const todoDiv = document.createElement('div');
+    todoDiv.classList.add('todo');
+    const newTodo = document.createElement('li');
+    newTodo.innerText=element.description;
+    newTodo.classList.add('todo-item');
+    todoDiv.appendChild(newTodo);
+     //completed button
+    const completeButton = document.createElement('button');
+    completeButton.innerHTML="complete";
+    completeButton.classList.add("complete-button")
+    todoDiv.appendChild(completeButton);
+
+    //delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML="delete";
+    deleteButton.classList.add("delete-button")
+    todoDiv.appendChild(deleteButton);
+
+    //Add new item and button to existing list
+    todoList.appendChild(todoDiv);
   })
-  .then(todos=>{
-    console.log(todos)
-  })
+}
+getData()
+
+const deleteTodo = async (description)=>{
+  const toBeDeleted = {description: description}
+  const response = await fetch('todos',{
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(toBeDeleted)
+  });
+  const data = await response.json();
+  console.log(data);
 }
 
 todoButton.addEventListener('click', addTodo);
@@ -18,13 +51,18 @@ todoList.addEventListener('click', deleteComplete);
 filterSelection.addEventListener('click', filterTodo);
 
 function addTodo(event){
+  // setTimeout(()=>initialPopulate(todosFromDB), 5000)
   //stop page from refreshing upon submission
   event.preventDefault();
-
+  //Create new div to add todo
   const todoDiv = document.createElement('div');
+  //Add it to class for styling
   todoDiv.classList.add('todo');
+  //Create a list item
   const newTodo = document.createElement('li');
+  //Make text of list item equal to what was typed in.
   newTodo.innerText=todoInput.value;
+  //Add it to class for styling
   newTodo.classList.add('todo-item');
   //adding the list item to the todo list created
   todoDiv.appendChild(newTodo);
@@ -45,14 +83,6 @@ function addTodo(event){
     console.error('Error:', error);
   });
 
-  // axios.post('/todos',
-  // {description: newTodo.innerText})
-  // .then(res=> {
-  //   if (res.status === 200){
-  //     console.log('sent ', res)
-  //   }
-    
-  // })
 
   //completed button
   const completeButton = document.createElement('button');
@@ -76,8 +106,12 @@ function addTodo(event){
 function deleteComplete(e){
   const item=e.target;
   if(item.classList[0]==="delete-button"){
-    const todo =item.parentElement    ;
+    const todo =item.parentElement;
+    const todoItem = todo.childNodes[0].innerHTML;
+    console.log('Deleted: ',todoItem)
+    deleteTodo(todoItem)
     todo.remove();
+    
   }
   if(item.classList[0]==="complete-button"){
     const todo =item.parentElement    ;
