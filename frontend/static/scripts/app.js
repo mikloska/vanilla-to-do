@@ -9,6 +9,7 @@ const getData = async () => {
   const response = await fetch('gettodos');
   const data = await response.json();
   data.forEach(element => {
+    
     const todoDiv = document.createElement('div');
     todoDiv.classList.add('todo');
     const newTodo = document.createElement('li');
@@ -26,7 +27,7 @@ const getData = async () => {
     deleteButton.innerHTML="delete";
     deleteButton.classList.add("delete-button")
     todoDiv.appendChild(deleteButton);
-
+    if(element.completed === true) todoDiv.classList.toggle('completed');
     //Add new item and button to existing list
     todoList.appendChild(todoDiv);
   })
@@ -44,6 +45,19 @@ const deleteTodo = async (description)=>{
   });
   const data = await response.json();
   console.log(data);
+}
+
+const completeTodo = async (description)=>{
+  const toBeCompleted = {description: description}
+  const response = await fetch('todos',{
+    method: 'PUT',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(toBeCompleted)
+  });
+  const data = await response.json();
+  console.log('The PUT response is: ', data);
 }
 
 todoButton.addEventListener('click', addTodo);
@@ -108,7 +122,7 @@ function deleteComplete(e){
   if(item.classList[0]==="delete-button"){
     const todo =item.parentElement;
     const todoItem = todo.childNodes[0].innerHTML;
-    console.log('Deleted: ',todoItem)
+    console.log('Deleted: ',todo.childNodes)
     deleteTodo(todoItem)
     todo.remove();
     
@@ -116,6 +130,9 @@ function deleteComplete(e){
   if(item.classList[0]==="complete-button"){
     const todo =item.parentElement    ;
     todo.classList.toggle('completed');
+    const todoItem = todo.childNodes[0].innerHTML;
+    console.log('Complete: ',todoItem)
+    completeTodo(todoItem)
   }
 }
 
