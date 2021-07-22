@@ -2,7 +2,6 @@
   "name": "vanilla-todo",
   "version": "1.0.0",
   "description": "vanilla js to do list",
-  "main": "backend/server.js",
   "directories": {
     "test": "test"
   },

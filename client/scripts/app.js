@@ -4,8 +4,10 @@ const todoList=document.querySelector('.todo-list');
 const filterSelection = document.querySelector(".filter-todo");
 
 
+
 const todosFromDB=[]
 const getData = async () => {
+  
   const response = await fetch('gettodos');
   const data = await response.json();
   data.forEach(element => {
@@ -34,8 +36,8 @@ const getData = async () => {
 }
 getData()
 
-const deleteTodo = async (description)=>{
-  const toBeDeleted = {description: description}
+const deleteTodo = async (index)=>{
+  const toBeDeleted = {index: index}
   const response = await fetch('todos',{
     method: 'DELETE',
     headers: {
@@ -64,10 +66,28 @@ todoButton.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteComplete);
 filterSelection.addEventListener('click', filterTodo);
 
-function addTodo(event){
-  // setTimeout(()=>initialPopulate(todosFromDB), 5000)
+async function addTodo(event){
   //stop page from refreshing upon submission
   event.preventDefault();
+  
+
+  const inputData = {description: todoInput.value}
+  try {
+    const {data} = await axios.post('/todos', inputData);
+    console.log(data)
+
+
+  // const {data} = await fetch('/todos', {
+  //     method: 'POST', // or 'PUT'
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(inputData),
+  //   })
+  } catch (error) {
+    console.log('error: ', error)
+  }
+  
   //Create new div to add todo
   const todoDiv = document.createElement('div');
   //Add it to class for styling
@@ -77,25 +97,13 @@ function addTodo(event){
   //Make text of list item equal to what was typed in.
   newTodo.innerText=todoInput.value;
   //Add it to class for styling
+
+  // newTodo.id = data._id
   newTodo.classList.add('todo-item');
   //adding the list item to the todo list created
   todoDiv.appendChild(newTodo);
 
-  const data = {description: newTodo.innerText}
-  fetch('/todos', {
-    method: 'POST', // or 'PUT'
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Success:', data);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+  // console.log(todoList.childNodes.length)
 
 
   //completed button
@@ -119,11 +127,16 @@ function addTodo(event){
 
 function deleteComplete(e){
   const item=e.target;
-  if(item.classList[0]==="delete-button"){
-    const todo =item.parentElement;
+  if(e.target.classList.contains("delete-button")){
+    const todo = e.target.parentElement;
+    let todoIndex;
+    todo.parentElement.childNodes.forEach((node, index)=>{
+      if(node === todo) todoIndex = index
+    })
+    console.log(todoIndex)
     const todoItem = todo.childNodes[0].innerHTML;
-    console.log('Deleted: ',todo.childNodes)
-    deleteTodo(todoItem)
+    // console.log('Deleted: ',todo.childNodes)
+    deleteTodo(todoIndex)
     todo.remove();
     
   }

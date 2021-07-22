@@ -6,8 +6,8 @@ const todoController = require('../controllers/todoController')
 router.get('/gettodos', 
   todoController.getAllToDos,
   (req,res) => {
-    res.status(200) //.json(res.local.todos)  ?????Why can I not chain .send???
-    res.send(res.locals.todos)
+    res.status(202).send(res.locals.todos)  
+    // res.send(res.locals.todos)
     // console.log('Response in router: ',res.locals.todos)
   }
 )
