@@ -12,6 +12,7 @@ const getData = async () => {
     
     const todoDiv = document.createElement('div');
     todoDiv.classList.add('todo');
+    todoDiv.id=element._id
     const newTodo = document.createElement('li');
     newTodo.innerText=element.description;
     newTodo.classList.add('todo-item');
@@ -34,8 +35,9 @@ const getData = async () => {
 }
 getData()
 
-const deleteTodo = async (description)=>{
-  const toBeDeleted = {description: description}
+const deleteTodo = async (id)=>{
+  console.log('Look here! ', id)
+  const toBeDeleted = {_id: id}
   const response = await fetch('todos',{
     method: 'DELETE',
     headers: {
@@ -68,7 +70,7 @@ function addTodo(event){
   // setTimeout(()=>initialPopulate(todosFromDB), 5000)
   //stop page from refreshing upon submission
   event.preventDefault();
-  //Create new div to add todo
+  // //Create new div to add todo
   const todoDiv = document.createElement('div');
   //Add it to class for styling
   todoDiv.classList.add('todo');
@@ -92,14 +94,12 @@ function addTodo(event){
   .then(response => response.json())
   .then(data => {
     console.log('Success:', data);
-    
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
 
-
-  //completed button
+  //Create new div to add todo
+  // const todoDiv = document.createElement('div');
+  //add id
+  todoDiv.id = data._id
+      //completed button
   const completeButton = document.createElement('button');
   completeButton.innerHTML="complete";
   completeButton.classList.add("complete-button")
@@ -116,24 +116,33 @@ function addTodo(event){
   //clear the input box
   todoInput.value="";
 
+
+
+
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+
 }
 
 function deleteComplete(e){
   const item=e.target;
   if(item.classList[0]==="delete-button"){
     const todo =item.parentElement;
-    const todoItem = todo.childNodes[0].innerHTML;
-    console.log('Deleted: ',todo.childNodes)
-    deleteTodo(todoItem)
+    const todoItemID = todo.id;
+    console.log('Deleted: ',e.target.parentElement)
+    // console.log(todoItem)
+    deleteTodo(todoItemID)
     todo.remove();
     
   }
   if(item.classList[0]==="complete-button"){
     const todo =item.parentElement    ;
     todo.classList.toggle('completed');
-    const todoItem = todo.childNodes[0].innerHTML;
-    console.log('Complete: ',todoItem)
-    completeTodo(todoItem)
+    const todoItemID = todo.childNodes[0].innerHTML;
+    console.log('Complete: ',todoItemID)
+    completeTodo(todoItemID)
   }
 }
 

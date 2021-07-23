@@ -33,10 +33,10 @@ todoController.addTodo = async (req,res,next)=>{
 }
 
 todoController.removeTodo = (req,res,next)=>{
-  console.log('in remove controller')
+  console.log('in remove controller, req.body is: ',req.body)
   try{
-    const {description: description} = req.body
-    Todo.findOneAndDelete({description}, (err,deletedTodo)=> {
+    const {_id: _id} = req.body
+    Todo.findOneAndDelete({_id}, (err,deletedTodo)=> {
       res.locals.todo = deletedTodo;
       return next()
     })  
