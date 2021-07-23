@@ -50,16 +50,17 @@ todoController.removeTodo = (req,res,next)=>{
 }
 
 
-todoController.updateTodo = (req,res,next)=>{
-  console.log('in put controller')
+todoController.updateTodo = async (req,res,next)=>{
+  console.log('in put controller, req.body is: ',req.body)
   try{
-    const filter = {description: req.body.description}
+    const filter = {_id: req.body._id}
     const update = {completed: true}
-    Todo.findOneAndUpdate(filter, update, (err,updatedTodo)=> {
+    res.locals.todo = await Todo.findOneAndUpdate(filter, update, (err,updatedTodo)=> {
       
-      res.locals.todo = updatedTodo;
-      return next()
+      // res.locals.todo = updatedTodo;
+      
     })  
+    return next()
   }
   catch(err){
     return next({

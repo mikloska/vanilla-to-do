@@ -55,7 +55,7 @@ router.delete('/todos',
 router.put('/todos', 
   todoController.updateTodo,
   (req, res)=> {
-    console.log(res.locals.todo)
+    console.log('Response in post put router: ',res.locals.todo)
     return res.status(200).json(res.locals.todo)
   }
 )

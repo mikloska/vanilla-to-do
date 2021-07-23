@@ -28,9 +28,10 @@ const getData = async () => {
     deleteButton.innerHTML="delete";
     deleteButton.classList.add("delete-button")
     todoDiv.appendChild(deleteButton);
-    if(element.completed === true) todoDiv.classList.toggle('completed');
+    
     //Add new item and button to existing list
     todoList.appendChild(todoDiv);
+    if(element.completed === true) todoDiv.classList.toggle('completed');
   })
 }
 getData()
@@ -49,8 +50,8 @@ const deleteTodo = async (id)=>{
   console.log(data);
 }
 
-const completeTodo = async (description)=>{
-  const toBeCompleted = {description: description}
+const completeTodo = async (id)=>{
+  const toBeCompleted = {_id: id}
   const response = await fetch('todos',{
     method: 'PUT',
     headers: {
@@ -138,9 +139,9 @@ function deleteComplete(e){
     
   }
   if(item.classList[0]==="complete-button"){
-    const todo =item.parentElement    ;
+    const todo =item.parentElement;
     todo.classList.toggle('completed');
-    const todoItemID = todo.childNodes[0].innerHTML;
+    const todoItemID = todo.id;
     console.log('Complete: ',todoItemID)
     completeTodo(todoItemID)
   }
