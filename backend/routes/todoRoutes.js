@@ -24,7 +24,7 @@ router.get('/gettodos',
 router.post('/todos', 
   todoController.addTodo,
   (req, res)=> {
-    console.log('Response in post router: ',res.locals.todo)
+    console.log('Response in post todo router: ',res.locals.todo)
     return res.status(200).json(res.locals.todo);
   }
 )
@@ -38,7 +38,7 @@ router.post('/todos',
 router.delete('/todos',
   todoController.removeTodo,
   (req,res)=> {
-    console.log('Response in delete router: ',res.locals.todo)
+    console.log('Response in delete todo router: ',res.locals.todo)
     return res.status(200).json(res.locals.todo)
   }
 
@@ -57,6 +57,15 @@ router.put('/todos',
   (req, res)=> {
     console.log(res.locals.todo)
     return res.status(200).json(res.locals.todo)
+  }
+)
+
+//use post as opposed to get, bc we will be creating a new token upon login
+router.post('/login', 
+  todoController.login,
+  (req, res)=> {
+    console.log('Response in post login router: ',res.locals.todo)
+    return res.status(200).json(res.locals.todo);
   }
 )
 

@@ -1,44 +1,39 @@
 const todoController = {}
 const Todo = require('../models/todoModel')
 
-todoController.getAllToDos = (req,res,next)=>{
+todoController.getAllToDos = async (req,res,next)=>{
   try{
-    Todo.find({}, (err,todos)=>{
-      // res.send(todos)
-      //??? Why do I not need to parse the data???
-      // console.log('Todos: ',todos)
-      res.locals.todos = todos;
-      return next()
+    res.locals.todos = await Todo.find({}, (err,todos)=>{
     })
+    return next()
   }
   catch(err){
     return next({
-      log: 'todoController.getAllToDos: ERROR: Error getting todos data from the database',
+      log: 'todoController.getAllToDos: ERROR: Error getting todos from the database',
       message: { err: `Error occurred in todoController.getAllToDos. err log: ${err}` },
     });
   }
 }
 
-todoController.addTodo = (req,res,next)=>{
-  console.log('in controller')
+todoController.addTodo = async (req,res,next)=>{
+  console.log('in add controller. Req.body is: ', req.body)
   try{
-    const description = req.body.description;
-    Todo.create({description}, (err, todo)=>{
-      
-      res.locals.todo = todo;
-      return next()
-    })
+
+    res.locals.todo = await Todo.create({description:req.body.description}
+
+    )
+    return next()
   }
   catch(err){
     return next({
-      log: 'todoController.addTodo: ERROR: Error getting todos data from the database',
+      log: 'todoController.addTodo: ERROR: Error adding todo to the database',
       message: { err: `Error occurred in todoController.addTodo. err log: ${err}` },
     });
   }
 }
 
 todoController.removeTodo = (req,res,next)=>{
-  console.log('in put controller')
+  console.log('in remove controller')
   try{
     const {description: description} = req.body
     Todo.findOneAndDelete({description}, (err,deletedTodo)=> {
@@ -48,7 +43,7 @@ todoController.removeTodo = (req,res,next)=>{
   }
   catch(err){
     return next({
-      log: 'todoController.addTodo: ERROR: Error getting todos data from the database',
+      log: 'todoController.addTodo: ERROR: Error removing todo from the database',
       message: { err: `Error occurred in todoController.addTodo. err log: ${err}` },
     });
   }
@@ -68,7 +63,26 @@ todoController.updateTodo = (req,res,next)=>{
   }
   catch(err){
     return next({
-      log: 'todoController.addTodo: ERROR: Error getting todos data from the database',
+      log: 'todoController.addTodo: ERROR: Error updating todo from the database',
+      message: { err: `Error occurred in todoController.addTodo. err log: ${err}` },
+    });
+  }
+}
+
+todoController.login = async (req,res,next)=>{
+  console.log('in add controller. Req.body is: ', req.body)
+  try{
+    // const entry = new Todo({description: req.body.description})
+    const {description: description} = req.body
+    await Todo.create({description:req.body.description}, (err, todo)=>{
+      
+      res.locals.todo = todo;
+      return next()
+    })
+  }
+  catch(err){
+    return next({
+      log: 'todoController.addTodo: ERROR: Error adding todo to the database',
       message: { err: `Error occurred in todoController.addTodo. err log: ${err}` },
     });
   }

@@ -5,6 +5,7 @@ const path =require('path')
 const todoRoutes = require('./routes/todoRoutes')
 const app = express()
 const Todo = require('./models/todoModel')
+const jwt = require('jsonwebtoken')
 
 //Needed to recognize requests objects as JSON
 app.use(express.json());
