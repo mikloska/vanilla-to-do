@@ -18,10 +18,10 @@ connectDB();
 const PORT = process.env.PORT || 3000;
 
 //Tell express to use static files in frontend; therefore their paths do not have to be referenced in index.html.
-app.use(express.static('frontend/static'))
+app.use(express.static('client/assets'))
 //Have express serve index.html
 app.get('/', (req,res)=>{
-  res.sendFile(path.join(__dirname, '../frontend/index.html'))
+  res.sendFile(path.join(__dirname, '../client/views/index.html'))
   // Todo.find({}, (err,todos)=>{
   //   res.send(todos)
   //   console.log(todos)
