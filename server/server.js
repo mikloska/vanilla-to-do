@@ -29,6 +29,6 @@ app.get('/', (req,res)=>{
   // .then(res.sendFile(path.join(__dirname, '../frontend/index.html')))
 })
 //Have express go to todo route
-app.use('/', todoRoutes)
+app.use('/api', todoRoutes)
 //Start up server
 app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`))

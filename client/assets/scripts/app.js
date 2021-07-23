@@ -6,7 +6,7 @@ const filterSelection = document.querySelector(".filter-todo");
 
 const todosFromDB=[]
 const getData = async () => {
-  const response = await fetch('gettodos');
+  const response = await fetch('api/gettodos');
   const data = await response.json();
   data.forEach(element => {
     
@@ -39,7 +39,7 @@ getData()
 const deleteTodo = async (id)=>{
   console.log('Look here! ', id)
   const toBeDeleted = {_id: id}
-  const response = await fetch('todos',{
+  const response = await fetch('api/todos',{
     method: 'DELETE',
     headers: {
       'Content-type': 'application/json'
@@ -52,7 +52,7 @@ const deleteTodo = async (id)=>{
 
 const completeTodo = async (id)=>{
   const toBeCompleted = {_id: id}
-  const response = await fetch('todos',{
+  const response = await fetch('api/todos',{
     method: 'PUT',
     headers: {
       'Content-type': 'application/json'
@@ -85,7 +85,7 @@ function addTodo(event){
   todoDiv.appendChild(newTodo);
 
   const data = {description: newTodo.innerText}
-  fetch('/todos', {
+  fetch('/api/todos', {
     method: 'POST', // or 'PUT'
     headers: {
       'Content-Type': 'application/json',

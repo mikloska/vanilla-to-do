@@ -15,7 +15,7 @@ header {
   font-size: 1.5rem;
 }
 
-header, form{
+header, form, #newtodo-div {
   min-height: 20vh;
   display: flex;
   justify-content: center;
@@ -23,7 +23,22 @@ header, form{
 
 }
 
+#secret-header, #todo-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+.secret-text {
+  height:10px;
+  width:100px;
+}
+.todo-input {
+
+}
+
+
 form input, form button{
+  
   padding: 0.5rem;
   font-size: 2rem;
   border: none;
