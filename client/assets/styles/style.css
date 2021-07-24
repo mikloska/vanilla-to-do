@@ -28,16 +28,27 @@ header, form, #newtodo-div {
   justify-content: center;
   align-items: center;
  }
-.secret-text {
-  height:10px;
-  width:100px;
+ #secret-header {
+   padding-top: 30px;
+ }
+.secret-button {
+  margin-left: 10px;
 }
-.todo-input {
-
+#secret-container {
+width: 450px;
+border-width:2px;
+border-style:solid;
+border-color:white;
+margin: auto;
+display: flex;
+flex-direction: column;
+justify-content: center;
+margin-bottom: 50px;
 }
 
 
-form input, form button{
+
+.todo-input, form button{
   
   padding: 0.5rem;
   font-size: 2rem;
@@ -63,7 +74,7 @@ form button:hover{
   align-items: center;
 }
 
-.todo-list{
+.todo-list, #secret-list{
   min-width: 30%;
   list-style:none;
 }

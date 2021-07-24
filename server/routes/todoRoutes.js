@@ -3,7 +3,7 @@ const Todo = require('../models/todoModel')
 const todoController = require('../controllers/todoController')
 
 
-router.get('/gettodos', 
+router.get('/', 
   todoController.getAllToDos,
   (req,res) => {
     res.status(200) //.json(res.local.todos)  ?????Why can I not chain .send???

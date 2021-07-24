@@ -3,10 +3,12 @@ const todoButton = document.querySelector('.todo-button');
 const todoList=document.querySelector('.todo-list');
 const filterSelection = document.querySelector(".filter-todo");
 
+// const secretButtonc=document.getElementById('')
 
-const todosFromDB=[]
+
+
 const getData = async () => {
-  const response = await fetch('api/gettodos');
+  const response = await fetch('api');
   const data = await response.json();
   data.forEach(element => {
     
@@ -62,6 +64,8 @@ const completeTodo = async (id)=>{
   const data = await response.json();
   console.log('The PUT response is: ', data);
 }
+
+
 
 todoButton.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteComplete);
